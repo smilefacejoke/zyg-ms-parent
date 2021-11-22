@@ -44,7 +44,7 @@ public class TestMyBatisPlus {
 //    3. 添加学生
     @Test
     public void test3(){
-        Student student=new Student("赵灵儿","女",19,"云南",4);
+        Student student=new Student("阿奴","女",16,"云南",4);
         studentService.add(student);
     }
 
@@ -52,13 +52,13 @@ public class TestMyBatisPlus {
     @Test
     public void test4(){
         //4.1 定义要修改的学生学号
-        int sid=20;
+        int sid=23;
         //4.2 找到该学生信息
         Student student=studentService.findById(sid);
         //4.3 判断其是否为空
         if(student!=null){
-            student.setAddr("香港");
-            student.setAge(21);
+            student.setAddr("南诏国");
+            student.setAge(16);
         }
         studentService.update(student);
     }
@@ -67,7 +67,7 @@ public class TestMyBatisPlus {
     @Test
     public void test5(){
 //        5.1 定义要删除的学生id
-        int sid=1;
+        int sid=22;
 //        5.2 开始删除
         studentService.delete(sid);
     }
