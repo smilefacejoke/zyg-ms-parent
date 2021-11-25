@@ -26,7 +26,7 @@
         prop="sellerId"
         header-align="center"
         align="center"
-        label="用户ID">
+        label="商家ID">
       </el-table-column>
       <el-table-column
         prop="name"
@@ -41,138 +41,20 @@
         label="店铺名称">
       </el-table-column>
       <el-table-column
-        prop="password"
-        header-align="center"
-        align="center"
-        label="密码">
-      </el-table-column>
-      <el-table-column
-        prop="email"
-        header-align="center"
-        align="center"
-        label="EMAIL">
-      </el-table-column>
-      <el-table-column
-        prop="mobile"
-        header-align="center"
-        align="center"
-        label="公司手机">
-      </el-table-column>
-      <el-table-column
         prop="telephone"
         header-align="center"
         align="center"
         label="公司电话">
       </el-table-column>
       <el-table-column
-        prop="status"
-        header-align="center"
-        align="center"
-        label="状态">
-      </el-table-column>
-      <el-table-column
-        prop="addressDetail"
-        header-align="center"
-        align="center"
-        label="详细地址">
-      </el-table-column>
-      <el-table-column
-        prop="linkmanName"
-        header-align="center"
-        align="center"
-        label="联系人姓名">
-      </el-table-column>
-      <el-table-column
-        prop="linkmanQq"
-        header-align="center"
-        align="center"
-        label="联系人QQ">
-      </el-table-column>
-      <el-table-column
-        prop="linkmanMobile"
-        header-align="center"
-        align="center"
-        label="联系人电话">
-      </el-table-column>
-      <el-table-column
-        prop="linkmanEmail"
-        header-align="center"
-        align="center"
-        label="联系人EMAIL">
-      </el-table-column>
-      <el-table-column
-        prop="licenseNumber"
-        header-align="center"
-        align="center"
-        label="营业执照号">
-      </el-table-column>
-      <el-table-column
-        prop="taxNumber"
-        header-align="center"
-        align="center"
-        label="税务登记证号">
-      </el-table-column>
-      <el-table-column
-        prop="orgNumber"
-        header-align="center"
-        align="center"
-        label="组织机构代码">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        header-align="center"
-        align="center"
-        label="公司地址">
-      </el-table-column>
-      <el-table-column
-        prop="logoPic"
-        header-align="center"
-        align="center"
-        label="公司LOGO图">
-      </el-table-column>
-      <el-table-column
-        prop="brief"
-        header-align="center"
-        align="center"
-        label="简介">
-      </el-table-column>
-      <el-table-column
-        prop="createTime"
-        header-align="center"
-        align="center"
-        label="创建日期">
-      </el-table-column>
-      <el-table-column
-        prop="legalPerson"
-        header-align="center"
-        align="center"
-        label="法定代表人">
-      </el-table-column>
-      <el-table-column
-        prop="legalPersonCardId"
-        header-align="center"
-        align="center"
-        label="法定代表人身份证">
-      </el-table-column>
-      <el-table-column
-        prop="bankUser"
-        header-align="center"
-        align="center"
-        label="开户行账号名称">
-      </el-table-column>
-      <el-table-column
-        prop="bankName"
-        header-align="center"
-        align="center"
-        label="开户行">
-      </el-table-column>
-      <el-table-column
         fixed="right"
         header-align="center"
         align="center"
-        width="150"
+        width="250"
         label="操作">
         <template slot-scope="scope">
+          <el-button type="text" size="small" @click="updateStatus(scope.row.sellerId,2)">审核未通过</el-button>
+          <el-button type="text" size="small" @click="updateStatus(scope.row.sellerId,1)">审核通过</el-button>
           <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.sellerId)">修改</el-button>
           <el-button type="text" size="small" @click="deleteHandle(scope.row.sellerId)">删除</el-button>
         </template>
@@ -215,7 +97,21 @@
     activated () {
       this.getDataList()
     },
+
+    created() {
+      this.updateStatus()
+    },
     methods: {
+
+      //商家审核
+      updateStatus(sellerId,status){
+        this.$http({
+          url: this.$http.adornUrl(`/manager/seller/updateStatus/${sellerId}/${status}`),
+          method: 'get',
+        }).then(({data}) => {
+          this.getDataList();
+        })
+      },
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
@@ -229,7 +125,7 @@
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.dataList = data.page.list
+            this.dataList = data.page.list.filter(f=>f.status==0)   //过滤器,只显示状态值为0的值,代表未审核
             this.totalPage = data.page.totalCount
           } else {
             this.dataList = []

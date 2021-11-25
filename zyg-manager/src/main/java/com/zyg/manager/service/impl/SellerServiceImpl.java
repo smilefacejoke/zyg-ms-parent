@@ -26,4 +26,19 @@ public class SellerServiceImpl extends ServiceImpl<SellerDao, SellerEntity> impl
         return new PageUtils(page);
     }
 
+    /**
+     * 商家审核
+     * @param sellerId
+     * @param status
+     */
+    @Override
+    public void updateStatus(String sellerId, String status) {
+        //2.1 根据商家的sellerid查出商家
+        SellerEntity sellerEntity=this.getById(sellerId);
+        //2.2 修改状态
+        sellerEntity.setStatus(status);
+        //2.3 开始修改
+        this.updateById(sellerEntity);
+    }
+
 }

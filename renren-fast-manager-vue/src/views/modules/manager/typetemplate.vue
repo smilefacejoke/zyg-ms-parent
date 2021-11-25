@@ -39,18 +39,33 @@
         header-align="center"
         align="center"
         label="关联规格">
+        <template slot-scope="scope">
+          <span v-for="spec in JSON.parse(scope.row.specIds)">
+            {{spec.text}}
+          </span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="brandIds"
         header-align="center"
         align="center"
         label="关联品牌">
+        <template slot-scope="scope">
+          <span v-for="brand in JSON.parse(scope.row.brandIds)">
+            {{brand.text}}
+          </span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="customAttributeItems"
         header-align="center"
         align="center"
         label="自定义属性">
+        <template slot-scope="scope">
+          <span v-for="customAttributeItem in JSON.parse(scope.row.customAttributeItems)">
+            {{customAttributeItem.text}}
+          </span>
+        </template>
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -68,7 +83,7 @@
       @size-change="sizeChangeHandle"
       @current-change="currentChangeHandle"
       :current-page="pageIndex"
-      :page-sizes="[10, 20, 50, 100]"
+      :page-sizes="[2, 3, 4, 5]"
       :page-size="pageSize"
       :total="totalPage"
       layout="total, sizes, prev, pager, next, jumper">
@@ -158,7 +173,7 @@
         }).then(() => {
           this.$http({
             url: this.$http.adornUrl('/manager/typetemplate/delete'),
-            method: 'post',
+            method: 'delete',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
             if (data && data.code === 0) {

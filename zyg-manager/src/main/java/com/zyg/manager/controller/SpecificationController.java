@@ -1,6 +1,7 @@
 package com.zyg.manager.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -37,6 +38,15 @@ public class SpecificationController {
         PageUtils page = specificationService.queryPage(params);
 
         return R.ok().put("page", page);
+    }
+
+    /**
+     * 查询规格列表（不分页）
+     */
+    @GetMapping("findAll")
+    public R findAll(){
+        List<SpecificationEntity> list=specificationService.list();
+        return R.ok().put("list",list);
     }
 
 

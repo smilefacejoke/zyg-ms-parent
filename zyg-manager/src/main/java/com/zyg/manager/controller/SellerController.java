@@ -83,4 +83,14 @@ public class SellerController {
         return R.ok();
     }
 
+    /**
+     * 商家审核
+     */
+    @GetMapping("/updateStatus/{id}/{status}")
+    public R updateStatus(@PathVariable("id") String sellerId,@PathVariable String status){
+        sellerService.updateStatus(sellerId,status);
+        return R.ok();
+    }
+
+
 }

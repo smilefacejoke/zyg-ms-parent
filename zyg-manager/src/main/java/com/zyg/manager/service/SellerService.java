@@ -16,5 +16,7 @@ import java.util.Map;
 public interface SellerService extends IService<SellerEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void updateStatus(String sellerId, String status);
 }
 

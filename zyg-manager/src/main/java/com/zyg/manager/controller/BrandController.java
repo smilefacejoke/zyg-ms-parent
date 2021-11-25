@@ -37,6 +37,14 @@ public class BrandController {
         return R.ok().put("page", page);
     }
 
+    /**
+     * 查询所有品牌（无分页）
+     */
+    @GetMapping("/findAll")
+    public R findAll(){
+        return R.ok().put("list",brandService.list());
+    }
+
 
     /**
      * 信息
