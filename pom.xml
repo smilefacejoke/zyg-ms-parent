@@ -17,6 +17,7 @@
     <modules>
         <module>zyg-manager</module>
         <module>zyg-common</module>
+        <module>zyg-shop</module>
     </modules>
 
     <dependencyManagement>
