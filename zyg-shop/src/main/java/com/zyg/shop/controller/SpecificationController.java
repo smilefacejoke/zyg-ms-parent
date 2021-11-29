@@ -1,9 +1,11 @@
 package com.zyg.shop.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.zyg.shop.entity.group.Specification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,6 +83,15 @@ public class SpecificationController {
 		specificationService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
+    }
+
+    /**
+     * 通过模板id查询规格及规格选项
+     */
+    @GetMapping("findSpecByTypeId/{typeId}")
+    public R findSpecByTypeId(@PathVariable String typeId){
+        List<Map>specifications = specificationService.findSpecByTypeId(typeId);
+        return R.ok().put("specifications",specifications);
     }
 
 }
