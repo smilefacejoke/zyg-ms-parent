@@ -18,20 +18,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Goods implements Serializable {
-    /**
-     * spu
-     */
+    //spu
     private GoodsEntity goods;
-
-
-    /**
-     * spu商品描述
-     */
+    //spu商品描述
     private GoodsDescEntity goodsDesc;
-
-    /**
-     * sku商品列表
-     */
+    //sku商品列表
     private List<ItemEntity> items;
-
 }

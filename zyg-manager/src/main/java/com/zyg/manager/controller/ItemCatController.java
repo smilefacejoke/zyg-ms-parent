@@ -22,7 +22,7 @@ import com.zyg.common.utils.R;
  * @date 2021-11-23 10:27:07
  */
 @RestController
-@RequestMapping("manager/itemcat")
+@RequestMapping("manager/itemCat")
 public class ItemCatController {
     @Autowired
     private ItemCatService itemCatService;
@@ -39,6 +39,8 @@ public class ItemCatController {
     }
 
 
+
+
     /**
      * 信息
      */
@@ -49,6 +51,8 @@ public class ItemCatController {
 
         return R.ok().put("itemCat", itemCat);
     }
+
+
 
     /**
      * 保存
@@ -81,6 +85,14 @@ public class ItemCatController {
 		itemCatService.removeByIds(Arrays.asList(ids));
 
         return R.ok();
+    }
+
+    /**
+     * 查询所有分类不分页
+     */
+    @GetMapping("/findItemCat")
+    public R findItemCat(){
+        return R.ok().put("itemCatList",itemCatService.list());
     }
 
 }

@@ -43,6 +43,14 @@ public class ItemCatController {
 
 
     /**
+     * 查询所有分类不分页
+     */
+    @GetMapping("/findItemCat")
+    public R findItemCat(){
+        return R.ok().put("itemCatList",itemCatService.list());
+    }
+
+    /**
      * 信息
      */
     @GetMapping("/info/{id}")
@@ -87,7 +95,7 @@ public class ItemCatController {
     }
 
     /**
-     * 查询所有分类
+     * 查询所有分类(一级分类)
      */
     @GetMapping("/findAll")
     public R findAll(){

@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
 /**
  * 
  * 
@@ -24,6 +27,7 @@ public class GoodsEntity implements Serializable {
 	 * 主键
 	 */
 	@TableId
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String id;
 	/**
 	 * 商家ID

@@ -1,6 +1,7 @@
 package com.zyg.manager.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.math.BigDecimal;
@@ -84,6 +85,7 @@ public class GoodsEntity implements Serializable {
 	/**
 	 * 是否删除
 	 */
+	@TableLogic
 	private String isDelete;
 
 }

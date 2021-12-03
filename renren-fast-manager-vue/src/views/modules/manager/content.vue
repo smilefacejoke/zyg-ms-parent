@@ -26,13 +26,13 @@
         prop="id"
         header-align="center"
         align="center"
-        label="">
+        label="广告id">
       </el-table-column>
       <el-table-column
         prop="categoryId"
         header-align="center"
         align="center"
-        label="内容类目ID">
+        label="分类id">
       </el-table-column>
       <el-table-column
         prop="title"
@@ -44,20 +44,18 @@
         prop="url"
         header-align="center"
         align="center"
-        label="链接">
+        label="URL">
       </el-table-column>
       <el-table-column
         prop="pic"
         header-align="center"
         align="center"
-        label="图片绝对路径">
+        label="图片">
+        <template slot-scope="scope">
+          <img :src="scope.row.pic" width="100px" height="50px"/>
+        </template>
       </el-table-column>
-      <el-table-column
-        prop="status"
-        header-align="center"
-        align="center"
-        label="状态">
-      </el-table-column>
+
       <el-table-column
         prop="sortOrder"
         header-align="center"
@@ -72,7 +70,6 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

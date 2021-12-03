@@ -3,7 +3,8 @@ package com.zyg.shop.controller;
 import java.util.Arrays;
 import java.util.Map;
 
-//import org.apache.shiro.authz.annotation.RequiresPermissions;
+
+import com.zyg.shop.entity.group.Goods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +39,15 @@ public class GoodsController {
         return R.ok().put("page", page);
     }
 
+    /**
+     * 根据商品id查询商品
+     */
+    @GetMapping("/findById/{id}")
+    public R findById(@PathVariable String id){
+        Goods goods=goodsService.findById(id);
+        return R.ok().put("goods",goods);
+    }
+
 
     /**
      * 信息
@@ -55,7 +65,7 @@ public class GoodsController {
      */
     @PostMapping("/save")
     //@RequiresPermissions("shop:goods:save")
-    public R save(@RequestBody GoodsEntity goods){
+    public R save(@RequestBody Goods goods){
 		goodsService.save(goods);
 
         return R.ok();
@@ -66,8 +76,8 @@ public class GoodsController {
      */
     @PutMapping("/update")
     //@RequiresPermissions("shop:goods:update")
-    public R update(@RequestBody GoodsEntity goods){
-		goodsService.updateById(goods);
+    public R update(@RequestBody Goods goods){
+		goodsService.update(goods);
 
         return R.ok();
     }

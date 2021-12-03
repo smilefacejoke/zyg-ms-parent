@@ -26,97 +26,51 @@
         prop="id"
         header-align="center"
         align="center"
-        label="主键">
-      </el-table-column>
-      <el-table-column
-        prop="sellerId"
-        header-align="center"
-        align="center"
-        label="商家ID">
+        label=商品id>
       </el-table-column>
       <el-table-column
         prop="goodsName"
         header-align="center"
         align="center"
-        label="SPU名">
-      </el-table-column>
-      <el-table-column
-        prop="defaultItemId"
-        header-align="center"
-        align="center"
-        label="默认SKU">
-      </el-table-column>
-      <el-table-column
-        prop="auditStatus"
-        header-align="center"
-        align="center"
-        label="状态">
-      </el-table-column>
-      <el-table-column
-        prop="isMarketable"
-        header-align="center"
-        align="center"
-        label="是否上架">
-      </el-table-column>
-      <el-table-column
-        prop="brandId"
-        header-align="center"
-        align="center"
-        label="品牌">
-      </el-table-column>
-      <el-table-column
-        prop="caption"
-        header-align="center"
-        align="center"
-        label="副标题">
-      </el-table-column>
-      <el-table-column
-        prop="category1Id"
-        header-align="center"
-        align="center"
-        label="一级类目">
-      </el-table-column>
-      <el-table-column
-        prop="category2Id"
-        header-align="center"
-        align="center"
-        label="二级类目">
-      </el-table-column>
-      <el-table-column
-        prop="category3Id"
-        header-align="center"
-        align="center"
-        label="三级类目">
-      </el-table-column>
-      <el-table-column
-        prop="smallPic"
-        header-align="center"
-        align="center"
-        label="小图">
+        label="商品名称">
       </el-table-column>
       <el-table-column
         prop="price"
         header-align="center"
         align="center"
-        label="商城价">
+        label="商品价格">
       </el-table-column>
       <el-table-column
-        prop="typeTemplateId"
         header-align="center"
         align="center"
-        label="分类模板ID">
+        label="一级分类">
+        <template slot-scope="scope">
+          {{itemCatList[scope.row.category1Id]}}
+        </template>
       </el-table-column>
       <el-table-column
-        prop="isEnableSpec"
         header-align="center"
         align="center"
-        label="是否启用规格">
+        label="二级分类">
+        <template slot-scope="scope">
+          {{itemCatList[scope.row.category2Id]}}
+        </template>
       </el-table-column>
       <el-table-column
-        prop="isDelete"
         header-align="center"
         align="center"
-        label="是否删除">
+        label="三级分类">
+        <template slot-scope="scope">
+          {{itemCatList[scope.row.category3Id]}}
+        </template>
+      </el-table-column>
+      <el-table-column
+        header-align="center"
+        align="center"
+        label="状态">
+        <template slot-scope="scope">
+          {{status[scope.row.auditStatus]}}
+        </template>
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -126,7 +80,6 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -146,6 +99,7 @@
 
 <script>
   import AddOrUpdate from './goodsadd'
+  import item from "../../../../../renren-fast-manager-vue/src/views/modules/manager/item";
   export default {
     data () {
       return {
@@ -158,16 +112,36 @@
         totalPage: 0,
         dataListLoading: false,
         dataListSelections: [],
-        addOrUpdateVisible: false
+        addOrUpdateVisible: false,
+        status:['未审核','已审核','审核未通过','已关闭'], //代表商品状态值，数据库为数值。
+        itemCatList:[],       //代表所有的商品分类
       }
     },
     components: {
       AddOrUpdate
     },
     activated () {
-      this.getDataList()
+      this.getDataList();
+      this.findItemCatList();
     },
     methods: {
+
+      //查询商品分类
+      findItemCatList(){
+        this.$http({
+          url: this.$http.adornUrl('/shop/itemCat/findItemCat'),
+          method: 'get',
+        }).then(({data}) => {
+          if(data.code===0){
+            for(let i=0;i<data.itemCatList.length;i++){
+              let itemCat=data.itemCatList[i];
+              //以商品id为key，以商品名称为值放到一个新的关联数组
+              this.itemCatList[itemCat.id]=itemCat.name;
+            }
+          }
+        })
+      },
+
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
@@ -207,10 +181,8 @@
       },
       // 新增 / 修改
       addOrUpdateHandle (id) {
-        this.addOrUpdateVisible = true
-        this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(id)
-        })
+        console.log(id);
+        this.$router.push(`/shop-goodsadd?id=${id}`);
       },
       // 删除
       deleteHandle (id) {
