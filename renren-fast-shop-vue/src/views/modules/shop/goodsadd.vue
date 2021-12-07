@@ -259,7 +259,7 @@
           url: this.$http.adornUrl(`/shop/typetemplate/info/${typeId}`),
           method: 'get',
         }).then(({data}) => {
-          if(data.code == 0){
+          if(data.code === 0){
             //① 得到模板的品牌列表
             this.brandList = JSON.parse(data.typeTemplate.brandIds);
             //② 得到模板的扩展属性列表

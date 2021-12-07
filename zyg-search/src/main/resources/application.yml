@@ -1,0 +1,20 @@
+server:
+  port: 9003
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.56.12:3306/zyg_manager?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 123
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.56.12
+
+logging:
+  level:
+    com.zyg.search: debug
+
+elasticsearch:
+  host: 192.168.56.12
+  port: 9200

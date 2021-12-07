@@ -6,8 +6,18 @@ spring:
     url: jdbc:mysql://192.168.56.12:3306/zyg_manager?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
     password: 123
+  thymeleaf:
+    cache: false
+  #    prefix: classpath:/templates/
+  #   suffix: .html
+  redis:
+    host: 192.168.56.12
+    port: 6379
+
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
+
+
 
 
 logging:

@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "elasticsearch",
+      "type": "com.zyg.search.config.zygElasticsearchConfig",
+      "sourceType": "com.zyg.search.config.zygElasticsearchConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "elasticsearch.host",
+      "type": "java.lang.String",
+      "sourceType": "com.zyg.search.config.zygElasticsearchConfig"
+    },
+    {
+      "name": "elasticsearch.port",
+      "type": "java.lang.Integer",
+      "sourceType": "com.zyg.search.config.zygElasticsearchConfig"
+    }
+  ],
+  "hints": []
+}

@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.zyg.manager.service.ContentCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import com.zyg.manager.entity.ContentEntity;
@@ -26,6 +28,9 @@ import com.zyg.common.utils.R;
 public class ContentController {
     @Autowired
     private ContentService contentService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
 
     /**
      * 列表
@@ -56,6 +61,7 @@ public class ContentController {
     @PostMapping("/save")
     //@RequiresPermissions("manager:content:save")
     public R save(@RequestBody ContentEntity content){
+        redisTemplate.delete("contentList");
 		contentService.save(content);
 
         return R.ok();
@@ -67,6 +73,7 @@ public class ContentController {
     @PutMapping("/update")
     //@RequiresPermissions("manager:content:update")
     public R update(@RequestBody ContentEntity content){
+        redisTemplate.delete("contentList");
 		contentService.updateById(content);
 
         return R.ok();
@@ -78,6 +85,7 @@ public class ContentController {
     @DeleteMapping("/delete")
     //@RequiresPermissions("manager:content:delete")
     public R delete(@RequestBody String[] ids){
+        redisTemplate.delete("contentList");
 		contentService.removeByIds(Arrays.asList(ids));
 
         return R.ok();

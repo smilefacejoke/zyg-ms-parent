@@ -18,6 +18,7 @@
         <module>zyg-manager</module>
         <module>zyg-common</module>
         <module>zyg-shop</module>
+        <module>zyg-search</module>
     </modules>
 
     <dependencyManagement>
