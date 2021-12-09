@@ -1,9 +1,11 @@
 package com.zyg.manager.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.zyg.manager.entity.ItemEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +38,15 @@ public class ItemCatController {
         PageUtils page = itemCatService.queryPage(params);
 
         return R.ok().put("page", page);
+    }
+
+    /**
+     * 查找
+     */
+    @GetMapping("/findAll")
+    public R findAll(){
+        List<ItemCatEntity> itemEntityList=itemCatService.findAll();
+        return R.ok().put("list",itemEntityList);
     }
 
 

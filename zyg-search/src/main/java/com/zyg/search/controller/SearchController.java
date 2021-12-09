@@ -15,7 +15,7 @@ import java.util.Map;
  * @date 2021/12/6
  */
 @Controller
-public class SerchController {
+public class SearchController {
 
     @Autowired
     private ItemSearchService searchService;
@@ -24,11 +24,11 @@ public class SerchController {
     @GetMapping({"/","/search.html","/search"})
     //  vo：用于查询参数
     public String index(Model model,ItemVo vo){
+        System.out.println("vo = " + vo);
         //1.1 通过前端传入的参数查询到数据
         Map<String,Object> resultMap=searchService.search(vo);
         //1.2 将查询到的结果放到model中
         model.addAttribute("resultMap",resultMap);
-        System.out.println("resultMap = " + resultMap);
         model.addAttribute("vo",vo);
         //1.3 返回逻辑视图
         return "search";
