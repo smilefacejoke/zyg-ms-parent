@@ -19,31 +19,114 @@
 		}
 		function search(){
 			let keywords = $("#keywords").val();
+			drawPageNav();
 			console.log("keywords:",keywords);
 			location.href = `/search?keywords=${keywords}`
 		}
 		//1. 分类查询
 		function addCategory(cate){
 			// console.log("cate:",cate,",href:",location.href);
+			drawPageNav();
 			location.href = replaceParamVal(location.href,"category",cate);
 		}
 		//2. 品牌查询
 		function addBrand(brand) {
+			drawPageNav();
 			location.href = replaceParamVal(location.href,"brand",brand);
 		}
 		//3. 规格查询
 		function addSpec(specName,optionName) {    // “内存”:“16G”
+			drawPageNav();
 			location.href = replaceParamVal(location.href,"spec",specName+":"+optionName,true);
 		}
 		//4. 价格区间查询
 		function addPrice(price) {    //
+			drawPageNav();
 			location.href = replaceParamVal(location.href,"price",price);
 		}
 		//5. 排序
 		function addSortParam(sort) {    //
+			drawPageNav();
 			location.href = replaceParamVal(location.href,"sort",sort);
-			console.log("aa:",aa);
+			console.log("排序完成")
 		}
+		//6. 绘制分页导航
+		function drawPageNav() {
+			//6.1 定义首页与尾页
+			let first=1;
+			let last = [[${resultMap.totalPage}]];
+			let totalPage=[[${resultMap.totalPage}]];
+			let page = parseInt([[${param.page == null ? 1 : param.page}]]);
+			//定义代表前后省略号的变量
+			let firstDot= true;
+			let lastDot= true;
+			console.log(page);
+
+			//6.2 处理分页逻辑
+			if (totalPage>5){
+				if(page<=3){
+					last=5;
+					firstDot=false;
+				}else if(page>=totalPage-2){
+					first=totalPage-4;
+					lastDot=false;
+				}else{
+					first=page-2;
+					last=page+2;
+					firstDot=true;
+					lastDot=true;
+				}
+			}else{
+				firstDot=false;
+				lastDot=false;
+
+			}
+
+			//6.3 绘制分页导航
+			let str = "";
+			for (let i = first; i <= last ; i++) {
+				str += `<li class="${page == i ? 'active' : ''}">`;
+				str += "<a href='javascript:;' onclick=findByPage("+i+")>" + i + "</a>";
+				str += "</li>";
+			}
+			$($(".pagination-large ul li")[1]).after(str);
+
+			//6.5 添加前后的省略号
+			$(".dotted").css("display","none");
+			if(firstDot){
+				// $($(".pagination-large ul li")[0]).after(dotInfo);
+				$(".first").css("display","inline-block");
+			}
+			if(lastDot){
+				// $(".pagination-large ul li").last().after(dotInfo);
+				$(".last").css("display","inline-block");
+			}
+
+		}
+
+
+		function findByPage(page) {
+			location.href=replaceParamVal(location.href,"page",page);
+		}
+
+		//当页面重新加载时，我们重新绘制
+		$(function(){
+			drawPageNav();
+			//1. 判断品牌和规格列表是否有值，没值则不显示
+			let brandList = [[${resultMap.brandList}]];
+			let specList=[[${resultMap.specList}]];
+			let categoryList=[[${resultMap.categoryList}]];
+			if(brandList.length===0){
+				$(".brand").css("display","none");
+			}
+			if(specList.length===0){
+				$(".spec").css("display","none");
+			}
+			if(categoryList.length===0){
+				$(".category").css("display","none");
+			}
+		})
+
 		/**
 		 * 功能：路径替换函数
 		 * @param url 目前的url
@@ -169,7 +252,7 @@
 								<li class="f-item">9.9元团购</li>
 								<li class="f-item">办公用品</li>
 
-							</ul>
+     							</ul>
 						</div>
 					</div>
 					<div class="yui3-u Right shopArea">
@@ -222,7 +305,7 @@
 		<div class="bread">
 			<ul class="fl sui-breadcrumb">
 				<li>
-					<a href="#">全部结果</a>
+					<a href="#">全部结果共[[${resultMap.total}]]</a>
 				</li>
 				<li class="active">智能手机</li>
 			</ul>
@@ -240,14 +323,14 @@
 		</div>
 		<!--selector-->
 		<div class="clearfix selector">
-			<div class="type-wrap">
+			<div class="type-wrap" category>
 				<div class="fl key">商品分类</div>
 				<div class="fl value">
 					<a href="javascript:;" th:onclick="addCategory([[${cate}]])" th:each="cate : ${resultMap.categoryList}">[[${cate}]] </a>
 				</div>
 				<div class="fl ext"></div>
 			</div>
-			<div class="type-wrap logo">
+			<div class="type-wrap logo brand">
 				<div class="fl key brand">品牌</div>
 				<div class="value logos">
 					<ul class="logo-list">
@@ -262,7 +345,7 @@
 					<a href="javascript:void(0);">更多</a>
 				</div>
 			</div>
-			<div class="type-wrap" th:each="spec : ${resultMap.specList}">
+			<div class="type-wrap spec" th:each="spec : ${resultMap.specList}">
 				<div class="fl key">[[${spec.text}]]</div>
 				<div class="fl value">
 					<ul class="type-list">
@@ -393,27 +476,17 @@
 						<li class="prev disabled">
 							<a href="#">«上一页</a>
 						</li>
-						<li class="active">
-							<a href="#">1</a>
-						</li>
-						<li>
-							<a href="#">2</a>
-						</li>
-						<li>
-							<a href="#">3</a>
-						</li>
-						<li>
-							<a href="#">4</a>
-						</li>
-						<li>
-							<a href="#">5</a>
-						</li>
-						<li class="dotted"><span>...</span></li>
+
+						<li class="dotted first"><span>...</span></li>
+
+						<li class="dotted last"><span>...</span></li>
+
+
 						<li class="next">
 							<a href="#">下一页»</a>
 						</li>
 					</ul>
-					<div><span>共10页&nbsp;</span><span>
+					<div><span>[[${resultMap.totalPage}]]页&nbsp;&nbsp;</span><span>
       到第
       <input type="text" class="page-num">
       页 <button class="page-confirm" onclick="alert(1)">确定</button></span></div>

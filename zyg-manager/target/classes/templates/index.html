@@ -11,7 +11,18 @@
     <link rel="stylesheet" type="text/css" href="/static/portal/css/pages-JD-index.css" />
     <link rel="stylesheet" type="text/css" href="/static/portal/css/widget-jquery.autocomplete.css" />
     <link rel="stylesheet" type="text/css" href="/static/portal/css/widget-cartPanelView.css" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
+<script>
+	function search() {
+		//1.从文本款得到查询关键字
+		let keywords=$("#keywords").val();
+		//2. 向后台发送请求
+		location.href="http://search.zeyigou.com/search?keywords="+keywords;
+	}
+
+</script>
 
 <body>
 	<!-- 头部栏位 -->
@@ -65,8 +76,8 @@
 							<form action="" class="sui-form form-inline">
 								<!--searchAutoComplete-->
 								<div class="input-append">
-									<input id="autocomplete" type="text" class="input-error input-xxlarge" />
-									<button class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
+									<input id="keywords" type="text" class="input-error input-xxlarge" />
+									<button class="sui-btn btn-xlarge btn-danger" type="button" onclick="search()">搜索</button>
 								</div>
 							</form>
 						</div>

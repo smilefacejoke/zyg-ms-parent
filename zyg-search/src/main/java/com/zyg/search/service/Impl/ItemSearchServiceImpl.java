@@ -17,6 +17,8 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -90,7 +92,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             //3.1 遍历字符串
             for (String s : vo.getSpec()) {
                 String[] split = s.split(":");
-                booleanQuery.filter(QueryBuilders.termQuery("specMap." + split[0],split[1]));
+                booleanQuery.filter(QueryBuilders.termQuery("specMap." + split[0]+".keyword",split[1]));
             }
         }
         //4. 价格区间查询
@@ -115,11 +117,16 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }
         //将布尔查询连接的多个条件与builder进行绑定
         builder.withFilter(booleanQuery);
+
+        //开始分页
+        builder.withPageable(PageRequest.of(vo.getPage()-1,vo.getPageSize()));
+
         //1.7 构造查询结果
         NativeSearchQuery query = builder.build();
         //1.8 分析查询结果(参数1：代表查询对象 参数2：代表返回的结果对象 参数3：代表索引库名称)
         SearchHits<ItemEntity> searchHits = restTemplate.search(query, ItemEntity.class, IndexCoordinates.of("item"));
-        long totalHits = searchHits.getTotalHits();         //得到总记录数
+        long total = searchHits.getTotalHits();         //得到总记录数
+        long totalPage=(long)Math.ceil((double) total/vo.getPageSize());
         for (SearchHit<ItemEntity> searchHit : searchHits) {
             //1.8.1 得到原始数据的内容
             ItemEntity content = searchHit.getContent();
@@ -144,14 +151,19 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         System.out.println("categoryList = " + categoryList);
         //1.4 得到分类
         String category = vo.getCategory();
+        Map brandAndSpecMap=new HashMap();
         if(StrUtil.isBlank(category)){       //说明前台没有提交分类
             if(categoryList != null && categoryList.size() > 0) {
                 category = categoryList.get(0);
+                brandAndSpecMap=findBrandAndSpecMap(category);
+            }else {
+                brandAndSpecMap.put("brandList",new ArrayList<>());
+                brandAndSpecMap.put("specList",new ArrayList<>());
             }
         }
         System.out.println("category = " + category);
         //根据分类找到模板id，进而找到品牌列表及规格列表
-        Map brandAndSpecMap = findBrandAndSpecMap(category);
+        brandAndSpecMap = findBrandAndSpecMap(category);
 
         //1.9 将高亮集合放到resultMap中
         resultMap.put("rows",highlights);
@@ -159,6 +171,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         resultMap.put("categoryList",categoryList);
         //将品牌及规格列表放到map中
         resultMap.putAll(brandAndSpecMap);
+        //添加页面信息到map
+        resultMap.put("total",total);
+        resultMap.put("totalPage",totalPage);
 
         return resultMap;
     }
