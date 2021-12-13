@@ -19,6 +19,7 @@
         <module>zyg-common</module>
         <module>zyg-shop</module>
         <module>zyg-search</module>
+        <module>zyg-page</module>
     </modules>
 
     <dependencyManagement>

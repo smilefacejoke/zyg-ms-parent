@@ -1,0 +1,48 @@
+package com.zyg.page.service.Impl;
+
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zyg.common.utils.PageUtils;
+
+import com.zyg.common.utils.Query;
+import com.zyg.page.dao.ItemCatDao;
+import com.zyg.page.entity.ItemCatEntity;
+import com.zyg.page.service.ItemCatService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
+
+
+@Service("itemCatService")
+public class ItemCatServiceImpl extends ServiceImpl<ItemCatDao, ItemCatEntity> implements ItemCatService {
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    @Override
+    public PageUtils queryPage(Map<String, Object> params) {
+        IPage<ItemCatEntity> page = this.page(
+                new Query<ItemCatEntity>().getPage(params),
+                new QueryWrapper<ItemCatEntity>()
+        );
+
+        return new PageUtils(page);
+    }
+
+    @Override
+    public List<ItemCatEntity> findAll() {
+        //1. 查询所有分类
+        List<ItemCatEntity> list = this.list();
+        //2. 放到redis中保存
+        for(ItemCatEntity entity:list){
+            redisTemplate.boundHashOps("itemCats").put(entity.getName(),entity.getTypeId());
+        }
+        return list;
+    }
+
+}
