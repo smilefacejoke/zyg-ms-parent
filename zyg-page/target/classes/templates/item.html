@@ -14,57 +14,97 @@
 	<link rel="stylesheet" type="text/css" href="css/widget-cartPanelView.css" />
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+	<style>
+		dd {
 
+			text-align: center;
+		}
+	</style>
 	<script th:inline="javascript">
-		let optionVal = "";			//代表我们点击下去后的规格选项的值
-		// 当窗体加载完成时：
+
+		//1.设置用到的变量值
+		let specification = {};			//代表我们点击下去后的规格名称及规格选项的值
+		//1.1 得到所有的图片集合
+		let itemImages = JSON.parse([[${goodsDesc.itemImages}]]);
+		//1.2 自定义扩展属性
+		let customAttributeItems = JSON.parse([[${goodsDesc.customAttributeItems}]])
+		//1.3 规格属性
+		let specificationItems = JSON.parse([[${goodsDesc.specificationItems}]])
+		//1.4 sku商品列表
+		let skuList = [[${itemList}]];
+		//1.5 定义默认的sku商品对象
+		let sku = skuList.filter(f=>f.isDefault == 1)[0];
+
+		//2. 当窗体加载完成时：
 		$(function(){
-			//1. 得到所有的图片集合
-			let itemImages = JSON.parse([[${goodsDesc.itemImages}]]);
-			//自定义扩展属性
-			let customAttributeItems = JSON.parse([[${goodsDesc.customAttributeItems}]])
-			//规格属性
-			let specificationItems = JSON.parse([[${goodsDesc.specificationItems}]])
-			//2. 对放大镜图片设置src样式
+			//2.1 显示图片
+			showPic();
+
+			//2.2 显示自定义扩展属性及规格
+			showSpecAttr();
+
+			//2.3 当窗体一加载完成，让默认的sku商品的规格
+			showDefaultSpec();
+		})
+
+		//3. 当窗体一加载完成，让默认的sku商品的规格
+		function showDefaultSpec(){
+			//3.1 得到sku商品的规格
+			let skuSpec = JSON.parse(sku.spec);
+			for(let i in skuSpec){
+				console.log(i + ":" + skuSpec[i]);
+				//3.2 根据id选择默认sku商品的规格
+				$("#"+i + "-" + skuSpec[i]).addClass('selected');
+				//3.3 为当前用户的规格对象赋值（代表用户选择的对象）
+				specification[i] = skuSpec[i]
+			}
+			//3.4 设置商品标题及价格
+			setTitle();
+		}
+
+		//4. 显示图片
+		function showPic(){
+			//4.1 对放大镜图片设置src样式
 			$("#firstImg").prop("src",itemImages[0].url);
 			let imageStr = ""
-			//3. 遍历得到所有图片，并放到一个临时的字符串中
+			//4.2 遍历得到所有图片，并放到一个临时的字符串中
 			itemImages.forEach(item=>{
 				imageStr += `<li><img src="${item.url}" bimg="${item.url}" onmousemove="preview(this)" /></li>`
 			})
-			console.log("imageStr:",imageStr);
-			//4. 设置所有的图片到ul中显示
+			//4.3 设置所有的图片到ul中显示
 			$(".items ul").html(imageStr);
+		}
 
-			//<dd><a href="javascript:;" class="selected">金色<span title="点击取消选择">&nbsp;</span></a></dd>
-
-			//5. 显示自定义扩展属性
+		//5. 显示自定义扩展属性及规格
+		function showSpecAttr(){
 			//5.1 定义展示的自定义扩展属性字符串加上规格属性
 			let attrInfo = "";
 			//5.1.1 展示自定义扩展属性
 			customAttributeItems.forEach(customAttr=>{
 				attrInfo += `<dl>
 									<dt id="attr">
-										<div class="fl title">
+										<div class="fl title"  style="width:50px">
 											<i>${customAttr.text}</i>
 										</div>
 									</dt>
-									<dd><a href="javascript:;">${customAttr.value}</a></dd>
+									<dd><a href="javascript:;" style="">${customAttr.value}</a></dd>
 								</dl>`
 			})
 			//5.1.2 展示规格
+			let i = 0
 			specificationItems.forEach(spec=>{
 				attrInfo += `
-					<dl class="spec">
-						<dt>
-							<div class="fl title">
+					<dl class="spec" id="spec${i++}">
+						<dt >
+							<div class="fl title" style="width:50px">
 								<i>${spec.attributeName}</i>
 							</div>
 						</dt>`;
 				spec.attributeValue.forEach(val=>{
 					attrInfo += `
 					<dd >
-						<a href="javascript:;"  onclick="getSpec(this,'${val}')">
+						<a href="javascript:;"  style="width:40px;" id="${spec.attributeName}-${val}"
+						   onclick="getSpec(this,'${spec.attributeName}','${val}',${i-1})">
 						${val}
 						<span>&nbsp;</span>
 						</a>
@@ -74,18 +114,53 @@
 				attrInfo +=	"</dl>";
 			})
 			$("#specification").html(attrInfo);
-		})
-
-		//点击某个规格选项时触发
-		function getSpec(v,val){
-			//1. 为全局变量optionVal设置值
-			optionVal = val;
-			//2. 取消某个规格的所有规格选项的选中状态
-			$(".spec a").removeClass("selected");
-			//3. 为当前我们点击的哪个规格选项设置样式
-			$(v).addClass('selected');
 		}
 
+		//6. 点击某个规格选项时触发
+		function getSpec(v,specName,val,i){
+
+			//6.1 当用户点了某个规格选项时有其赋值
+			specification[specName] = val;
+			//6.2 取消某个规格的所有规格选项的选中状态
+			//方法一：
+			//$(v.parentNode.parentNode).find("a").removeClass("selected");
+			//方法二：
+			$("#spec"+i).find("a").removeClass("selected");
+			//6.3 为当前我们点击的哪个规格选项设置样式
+			$(v).addClass('selected');
+
+			//6.4 根据specification对象的值与skuList中的每一个spec对象进行比较如果相等就切换sku对象
+			skuList.forEach(sk=>{
+				let spec = JSON.parse(sk.spec);
+				if(matchObject(spec,specification)){
+					sku = sk;
+				}
+			})
+			//6.5 为sku商品标题及价格设置值
+			setTitle();
+		}
+
+		//7. 设置sku商品的标题及价格
+		function setTitle(){
+			//7.1 为sku商品标题及价格设置值
+			$("#itemTitle").html(sku.title);
+			$("#itemPrice").html(sku.price);
+		}
+
+		//8. 比较对象是否相等
+		function matchObject(m1,m2){
+			for (const k1 in m1) {
+				if(m1[k1] != m2[k1]){
+					return false;
+				}
+			}
+			for (const k2 in m2) {
+				if(m2[k2] != m1[k2]){
+					return false;
+				}
+			}
+			return true;
+		}
 	</script>
 </head>
 
@@ -204,15 +279,15 @@
 		<div class="crumb-wrap">
 			<ul class="sui-breadcrumb">
 				<li>
-					<a href="#">手机、数码、通讯</a>
+					<a href="#">[[${category1Name}]]</a>
 				</li>
 				<li>
-					<a href="#">手机</a>
+					<a href="#">[[${category2Name}]]</a>
 				</li>
 				<li>
-					<a href="#">Apple苹果</a>
+					<a href="#">[[${category3Name}]]</a>
 				</li>
-				<li class="active">iphone 6S系类</li>
+
 			</ul>
 		</div>
 		<!--product-info-->
@@ -239,7 +314,7 @@
 			</div>
 			<div class="fr itemInfo-wrap">
 				<div class="sku-name">
-					<h4>[[${goods.goodsName}]]</h4>
+					<h4 id="itemTitle">[[${goods.goodsName}]]</h4>
 				</div>
 				<div class="news"><span th:text="${goods.caption}"></span></div>
 				<div class="summary">
@@ -249,7 +324,7 @@
 						</div>
 						<div class="fl price">
 							<i>¥</i>
-							<em th:text="${goods.price}"></em>
+							<em th:text="${goods.price}" id="itemPrice"></em>
 							<span>降价通知</span>
 						</div>
 						<div class="fr remark">

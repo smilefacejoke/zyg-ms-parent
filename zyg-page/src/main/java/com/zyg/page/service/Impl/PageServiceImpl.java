@@ -1,11 +1,11 @@
 package com.zyg.page.service.Impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zyg.page.dao.GoodsDao;
 import com.zyg.page.entity.GoodsDescEntity;
 import com.zyg.page.entity.GoodsEntity;
-import com.zyg.page.service.GoodsDescService;
-import com.zyg.page.service.GoodsService;
-import com.zyg.page.service.PageService;
+import com.zyg.page.entity.ItemEntity;
+import com.zyg.page.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -16,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +35,12 @@ public class PageServiceImpl implements PageService {
 
     @Autowired
     private GoodsDescService goodsDescService;
+
+    @Autowired
+    private ItemCatService itemCatService;
+
+    @Autowired
+    private ItemService itemService;
 
     //id: 代表spu商品id
     @Override
@@ -54,10 +61,24 @@ public class PageServiceImpl implements PageService {
         //1.7 放到map集合中
         dataMap.put("goodsDesc",goodsDescEntity);
 
-        //1.8 构造输出流对象，指定输出的静态页面的位置
+        //1.8 查询一级分类，二级分类、三级分类名称
+        String category1Name=(itemCatService.getById(goodsEntity.getCategory1Id())).getName();
+        String category2Name=(itemCatService.getById(goodsEntity.getCategory2Id())).getName();
+        String category3Name=(itemCatService.getById(goodsEntity.getCategory3Id())).getName();
+        //1.9 将三级分类的名称放到datamap中
+        dataMap.put("category1Name",category1Name);
+        dataMap.put("category2Name",category2Name);
+        dataMap.put("category3Name",category3Name);
+
+        //1.10 根据goodsId查询sku（商品列表）
+        List<ItemEntity> itemEntityList = itemService.list(new QueryWrapper<ItemEntity>().eq("goods_id", id));
+        //1.11 放入到datamap中
+        dataMap.put("itemList",itemEntityList);
+
+        //1.12 构造输出流对象，指定输出的静态页面的位置
         Writer writer=new FileWriter("E:\\nginx-1.8.0\\html\\item\\"+id+".html");
 
-        //1.9 绑定聚合到上下文对象中
+        //1.13 绑定聚合到上下文对象中
         context.setVariables(dataMap);
 
         //参数1：代表模板的视图名， 参数2：模板工作的上下文环境， 参数3：指定输出的静态页面的输出流

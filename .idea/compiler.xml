@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="zyg-page" />
+        <module name="zyg-common" />
+        <module name="renren-generator" />
+        <module name="renren-fast-shop" />
+        <module name="mybatisplus-demo" />
+        <module name="renren-fast-manager" />
+        <module name="zyg-shop" />
+        <module name="zyg-manager" />
+        <module name="zyg-search" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="fastdfs" target="1.5" />
+      <module name="renren-fast (1)" target="1.8" />
+      <module name="renren-fast (2)" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="mybatisplus-demo" options="-parameters" />
+      <module name="renren-fast (1)" options="-parameters" />
+      <module name="renren-fast (2)" options="-parameters" />
+      <module name="renren-fast-manager" options="-parameters" />
+      <module name="renren-fast-shop" options="-parameters" />
+      <module name="renren-generator" options="-parameters" />
+      <module name="zyg-common" options="-parameters" />
+      <module name="zyg-manager" options="-parameters" />
+      <module name="zyg-page" options="-parameters" />
+      <module name="zyg-search" options="-parameters" />
+      <module name="zyg-shop" options="-parameters" />
+    </option>
+  </component>
+</project>
