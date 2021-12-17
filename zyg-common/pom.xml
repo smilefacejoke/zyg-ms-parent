@@ -109,7 +109,7 @@
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>3.2.5</version>
+            <version>4.5.20</version>
         </dependency>
 
         <dependency>
@@ -118,16 +118,6 @@
             <version>5.3.12</version>
             <scope>compile</scope>
         </dependency>
-        <!--1. 添加nacos的服务发现功能-->
-        <!--<dependency>-->
-        <!--    <groupId>com.alibaba.cloud</groupId>-->
-        <!--    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
-        <!--</dependency>-->
-        <!--2. 添加nacos注册中心功能-->
-        <!--<dependency>-->
-        <!--    <groupId>com.alibaba.cloud</groupId>-->
-        <!--    <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>-->
-        <!--</dependency>-->
         <!--3. 添加openfeign-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -142,5 +132,22 @@
             <artifactId>alipay-sdk-java</artifactId>
             <version>4.16.2.ALL</version>
         </dependency>
+
+        <!--1. 添加nacos的服务发现功能-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <!--2. 添加nacos注册中心功能-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+
     </dependencies>
 </project>

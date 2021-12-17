@@ -20,6 +20,9 @@
         <module>zyg-shop</module>
         <module>zyg-search</module>
         <module>zyg-page</module>
+        <module>zyg-user</module>
+        <module>rabbitmq-producer</module>
+        <module>rabbitmq-consumer</module>
     </modules>
 
     <dependencyManagement>

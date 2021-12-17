@@ -12,6 +12,9 @@ spring:
     cache: false
     prefix: classpath:/templates/
     suffix: .html
+  application:
+    name: zyg-page
+
 logging:
   level:
     com.zyg.page: debug
