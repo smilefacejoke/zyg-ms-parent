@@ -5,11 +5,15 @@ spring:
     name: zyg-user
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.56.12:3306/zyg_user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
-    name: root
+    url: jdbc:mysql://192.168.56.12:3306/zyg_user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username: root
     password: 123
   thymeleaf:
     cache: false
+  rabbitmq:
+    host: 192.168.56.12
+  redis:
+    host: 192.168.56.12
 logging:
   level:
     com.zyg.user: debug

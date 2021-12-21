@@ -1,0 +1,13 @@
+server:
+  port: 7003
+spring:
+  application:
+    name: canal-demo
+  redis:
+    host: 192.168.56.12
+canal:
+  client:
+    instances:
+      example:
+        host: 192.168.56.12
+        port: 11111

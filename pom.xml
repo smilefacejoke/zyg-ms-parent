@@ -23,6 +23,7 @@
         <module>zyg-user</module>
         <module>rabbitmq-producer</module>
         <module>rabbitmq-consumer</module>
+        <module>canal-demo</module>
     </modules>
 
     <dependencyManagement>

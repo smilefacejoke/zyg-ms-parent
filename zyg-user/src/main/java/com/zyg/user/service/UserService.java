@@ -3,8 +3,7 @@ package com.zyg.user.service;
 import com.zyg.user.entity.TbUser;
 
 /**
- * @author 涛哥
- * @date 2021/12/16
+ * Created by WF on 2021/12/13 14:43
  */
 public interface UserService {
     void createCode(String phone);

@@ -1,10 +1,5 @@
 package com.zyg.user.entity;
 
-/**
- * @author 涛哥
- * @date 2021/12/16
- */
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -17,8 +12,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Date;
 
 /**
- * 用户表
+ * Created by WF on 2021/11/8 15:37
  */
+
+/**
+    * 用户表
+    */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

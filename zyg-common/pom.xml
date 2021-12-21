@@ -149,5 +149,12 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>4.5.16</version>
+        </dependency>
+
+
     </dependencies>
 </project>
