@@ -17,3 +17,7 @@ spring:
 logging:
   level:
     com.zyg.user: debug
+
+feign:
+  hystrix:
+    enabled: true

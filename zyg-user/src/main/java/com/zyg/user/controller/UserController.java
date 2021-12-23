@@ -1,13 +1,18 @@
 package com.zyg.user.controller;
 
+import com.zyg.common.utils.R;
+import com.zyg.user.client.ManagerClient;
 import com.zyg.user.entity.TbUser;
 import com.zyg.user.service.UserService;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * ------------------------------
@@ -22,6 +27,12 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ManagerClient managerClient;
+
+//    @Autowired
+//    private RestTemplate restTemplate;
 
     @GetMapping({"/","register.html"})
     public String index(){
@@ -49,4 +60,13 @@ public class UserController {
         //应该到登录页面
         return "register";
     }
+
+    // 查询zyg-manager微服务的所有品牌
+    @GetMapping("user/brand/list")
+    @ResponseBody
+    public R findAll(){
+        return managerClient.findAll();
+    }
+
+
 }

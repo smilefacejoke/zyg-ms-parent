@@ -1,0 +1,37 @@
+server:
+  port: 88
+spring:
+  application:
+    name: zyg-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: after-predicate
+          uri: http://www.baidu.com
+          predicates:
+            - After=2021-12-23T17:09:00.299+08:00[Asia/Shanghai]
+          order: 100
+#配置路径映射
+        - id: zyg-manager
+#          uri: http://localhost:9001
+          uri: lb://zyg-manager
+          predicates:
+            - Path=/manager/**
+        - id: zyg-user
+          uri: lb://zyg-user
+          predicates:
+          - Path=/user/**
+
+#配置主机名映射
+        - id: zyg-portal-host
+          uri: lb://zyg-manager
+          predicates:
+            - Host=portal.zeyigou.com
+        - id: zyg-search-host
+          uri: lb://zyg-search
+          predicates:
+            - Host=search.zeyigou.com
+        - id: zyg-user-host
+          uri: lb://zyg-user
+          predicates:
+            - Host=user.zeyigou.com
