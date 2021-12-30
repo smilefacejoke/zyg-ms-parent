@@ -25,6 +25,7 @@
         <module>rabbitmq-consumer</module>
         <module>canal-demo</module>
         <module>zyg-gateway</module>
+        <module>zyg-cart</module>
     </modules>
 
     <dependencyManagement>

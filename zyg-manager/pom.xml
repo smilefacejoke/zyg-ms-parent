@@ -34,6 +34,12 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+<!--        1.添加cas客户端的依赖-->
+        <dependency>
+            <groupId>net.unicon.cas</groupId>
+            <artifactId>cas-client-autoconfig-support</artifactId>
+            <version>2.2.0-GA</version>
+        </dependency>
     </dependencies>
 
 

@@ -13,10 +13,16 @@ spring:
           order: 100
 #配置路径映射
         - id: zyg-manager
-#          uri: http://localhost:9001
           uri: lb://zyg-manager
+#          uri: lb://zyg-manager
           predicates:
             - Path=/manager/**
+        - id: zyg-shop
+          uri: lb://zyg-shop
+          #          uri: lb://zyg-manager
+          predicates:
+            - Path=/shop/**
+
         - id: zyg-user
           uri: lb://zyg-user
           predicates:
@@ -27,11 +33,36 @@ spring:
           uri: lb://zyg-manager
           predicates:
             - Host=portal.zeyigou.com
+
         - id: zyg-search-host
           uri: lb://zyg-search
           predicates:
             - Host=search.zeyigou.com
+
         - id: zyg-user-host
           uri: lb://zyg-user
           predicates:
             - Host=user.zeyigou.com
+#            - Header=myId,1001
+#            - Method=GET.POST
+#            - Query=param,zelin
+#            - Cookie=cook,val
+#          filters:
+#            - AddRequestHeader=myHeader, blue
+#            - AddRequestParameter=red, blue
+#            - StripPrefix=1   #去掉请求地址后的一层路径
+#            - RewritePath=/red/user(?<segment>/?.*),/suer$\{segnment}  #路径重写
+
+        - id: zyg-manager-host
+          uri: http://localhost:8081
+          predicates:
+            - Host=manager.zeyigou.com
+          filters:
+            - PrefixPath=/renren-fast
+
+        - id: zyg-shop-host
+          uri: http://localhost:8082
+          predicates:
+            - Host=shop.zeyigou.com
+          filters:
+            - PrefixPath=/renren-fast

@@ -33,6 +33,12 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.zyg</groupId>
+            <artifactId>zyg-cart</artifactId>
+            <version>3.0.0</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 

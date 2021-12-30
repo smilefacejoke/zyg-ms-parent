@@ -83,4 +83,12 @@ public class ItemController {
         return R.ok();
     }
 
+    /**
+     *根据id查询itemID
+     */
+    @GetMapping("/findById/{id}")
+    public ItemEntity findById(@PathVariable("id") String id){
+        return itemService.getById(id);
+    }
+
 }
