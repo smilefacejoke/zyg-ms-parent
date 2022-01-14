@@ -153,6 +153,21 @@
 			}
 			return true;
 		}
+
+		//9. 修改商品数量
+		function addNum(num) {
+			//9.1 得到原来的数量
+			let n = parseInt($("#num").val());
+			$("#num").val(n+num < 0 ? 0 : n+num);
+		}
+
+		//10.添加到购物车
+		function addCart() {
+			let num=$("#num").val();
+			location.href=`http://cart.zeyigou.com/addCart?itemId=${sku.id}&num=${num}`;
+			console.log(`http://cart.zeyigou.com/addCart?itemId=${sku.id}&num=${num}`);
+		}
+
 	</script>
 </head>
 
@@ -378,16 +393,16 @@
 						<div class="fl title">
 							<div class="control-group">
 								<div class="controls">
-									<input autocomplete="off" type="text" value="1" minnum="1" class="itxt" />
-									<a href="javascript:void(0)" class="increment plus">+</a>
-									<a href="javascript:void(0)" class="increment mins">-</a>
+									<input autocomplete="off" id="num" type="text" value="1" minnum="1" class="itxt" />
+									<a href="javascript:void(0)" class="increment plus" th:onclick="addNum(1)">+</a>
+									<a href="javascript:void(0)" class="increment mins" th:onclick="addNum(-1)">-</a>
 								</div>
 							</div>
 						</div>
 						<div class="fl">
 							<ul class="btn-choose unstyled">
 								<li>
-									<a href="cart.html" target="_blank" class="sui-btn  btn-danger addshopcar">加入购物车</a>
+									<a href="javascript:;" class="sui-btn  btn-danger addshopcar" onclick="addCart()">加入购物车</a>
 								</li>
 							</ul>
 						</div>

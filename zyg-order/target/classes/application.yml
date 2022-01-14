@@ -1,0 +1,19 @@
+server:
+  port: 9007
+spring:
+  application:
+    name: zyg-order
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.56.12:3306/zyg_order?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 123
+  redis:
+    host: 192.168.56.12
+  thymeleaf:
+    cache: false
+
+logging:
+  level:
+    com.zyg: debug
+
