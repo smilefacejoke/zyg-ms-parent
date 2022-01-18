@@ -1,8 +1,10 @@
 package com.zyg.order;
 
+import com.zyg.common.utils.AlipayTemplate;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
 
 /**
  * @author 涛哥
@@ -14,5 +16,11 @@ public class ZygOrderApplication {
     public static void main(String[] args) {
         SpringApplication.run(ZygOrderApplication.class);
     }
+
+    @Bean
+    public AlipayTemplate alipayTemplate(){
+        return new AlipayTemplate();
+    }
+
 }
 /**/

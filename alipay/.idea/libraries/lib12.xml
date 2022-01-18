@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/alipay_trade_page_pay_JAVA_UTF_8_Web_exploded/WEB-INF/lib/alipay-sdk-java20170324180803.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/artifacts/alipay_trade_page_pay_JAVA_UTF_8_Web_exploded/WEB-INF/lib/commons-logging-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/artifacts/alipay_trade_page_pay_JAVA_UTF_8_Web_exploded/WEB-INF/lib/alipay-sdk-java20170324180803-source.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

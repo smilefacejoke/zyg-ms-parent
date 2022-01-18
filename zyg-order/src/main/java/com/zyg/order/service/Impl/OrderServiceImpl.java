@@ -69,6 +69,8 @@ public class OrderServiceImpl implements OrderService {
         //定义存放订单id的集合
         List<String> ids=new ArrayList<>();
 
+        double total=0;
+
         //遍历购物车
         for(Cart cart:cartList){
             //part one:添加订单对象
@@ -112,34 +114,41 @@ public class OrderServiceImpl implements OrderService {
                 orderItemMapper.insert(orderItem);
             }
 
+            total=total+sum;
+
             //part three:添加订单
             //设置订单总金额
             newOrder.setPayment(new BigDecimal(sum));
             orderMapper.insert(newOrder);
 
-            //part four:添加日志
-            if("1".equals(order.getPaymentType())){
-                //定义一个tbPaylog对象
-                TbPayLog payLog=new TbPayLog();
-                payLog.setOutTradeNo(idWorker.nextId()+"");
-                //得到订单id
-                String orderIds=ids.toString().replace("[","").replace("]","");
-                payLog.setOrderList(orderIds);
+            }
+        //part four:添加日志
+        if("1".equals(order.getPaymentType())){
+            //定义一个tbPaylog对象
+            TbPayLog payLog=new TbPayLog();
+            payLog.setOutTradeNo(idWorker.nextId()+"");
+            //得到订单id
+            String orderIds=ids.toString().replace("[","").replace("]","");
+            payLog.setOrderList(orderIds);
 
-                payLog.setCreateTime(new Date());
-                payLog.setPayType("2");
-                payLog.setTotalFee((long)sum);
-                //0代表未支付，1代表已支付
-                payLog.setTradeState("0");
-                payLog.setUserId(username);
-                userClient.add(payLog);
+            payLog.setCreateTime(new Date());
+            payLog.setPayType("2");
+            payLog.setTotalFee((long)total);
+            //0代表未支付，1代表已支付
+            payLog.setTradeState("0");
+            payLog.setUserId(username);
+            userClient.add(payLog);
 //                payLogMapper.insert(payLog);
 
-                //添加到redis中
-                redisTemplate.opsForValue().set("paylog:"+username,JSON.toJSONString(payLog));
-
-            }
+            //添加到redis中
+            redisTemplate.opsForValue().set("paylog:"+username,JSON.toJSONString(payLog));
         }
     }
+
+    @Override
+    public TbPayLog getPayLogFromRedis(String username) {
+        return JSON.parseObject(redisTemplate.opsForValue().get("paylog:"+username),TbPayLog.class);
+    }
+
 
 }
