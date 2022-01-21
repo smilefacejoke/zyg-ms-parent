@@ -18,4 +18,9 @@ public interface OrderService {
 
     TbPayLog getPayLogFromRedis(String username);
 
+    List<TbOrder> getOrderList(String username);
+
+    TbOrder findById(String id);
+
+    void update(TbOrder order);
 }

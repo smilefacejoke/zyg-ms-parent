@@ -22,4 +22,18 @@ public class PayLogServiceImpl implements PayLogService {
     public void add(TbPayLog payLog) {
         payLogMapper.insert(payLog);
     }
+
+    @Override
+    public TbPayLog findById(String outTradeNo) {
+        return payLogMapper.selectById(outTradeNo);
+    }
+
+    /**
+     * 修改支付日志
+     * @param payLog
+     */
+    @Override
+    public void update(TbPayLog payLog) {
+        payLogMapper.updateById(payLog);
+    }
 }

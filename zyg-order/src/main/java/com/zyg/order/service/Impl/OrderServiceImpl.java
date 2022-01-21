@@ -1,6 +1,7 @@
 package com.zyg.order.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zyg.common.entity.TbPayLog;
 import com.zyg.common.utils.IdWorker;
 import com.zyg.order.client.UserClient;
@@ -11,6 +12,7 @@ import com.zyg.order.entity.TbOrder;
 import com.zyg.order.entity.TbOrderItem;
 import com.zyg.order.service.OrderService;
 import io.seata.spring.annotation.GlobalTransactional;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -148,6 +150,37 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public TbPayLog getPayLogFromRedis(String username) {
         return JSON.parseObject(redisTemplate.opsForValue().get("paylog:"+username),TbPayLog.class);
+    }
+
+    /**
+     * 根据登录名获取订单及订单项列表
+     * @param username
+     * @return
+     */
+    @Override
+    public List<TbOrder> getOrderList(String username) {
+        //得到登录用户的订单列表
+        List<TbOrder> orders = orderMapper.selectList(new QueryWrapper<TbOrder>().eq("user_id",username));
+        //为登录用户的订单项列表设置值
+        for(TbOrder order : orders){
+            //根据订单id（外键）查询出订单项列表
+            List<TbOrderItem> orderItems=orderItemMapper.selectList(new QueryWrapper<TbOrderItem>().eq("order_id",order.getOrderId()));
+            //与订单对象进行绑定
+            order.setOrderItems(orderItems);
+        }
+        //返回
+        return orders;
+
+    }
+
+    @Override
+    public TbOrder findById(String id) {
+        return orderMapper.selectById(id);
+    }
+
+    @Override
+    public void update(TbOrder order) {
+        orderMapper.updateById(order);
     }
 
 
